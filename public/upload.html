@@ -54,14 +54,11 @@
         <button class="btn-danger btn mt-3" id="send">올리기</button>
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <script defer src="/__/firebase/9.6.0/firebase-app.js"></script>
-    <script defer src="/__/firebase/9.6.0/firebase-auth.js"></script>
-    <script defer src="/__/firebase/9.6.0/firebase-firestore.js"></script>
-    <script defer src="/__/firebase/9.6.0/firebase-storage.js"></script>
+    <script defer src="/__/firebase/8.6.5/firebase-app.js"></script>
+    <script defer src="/__/firebase/8.6.5/firebase-auth.js"></script>
+    <script defer src="/__/firebase/8.6.5/firebase-firestore.js"></script>
+    <script defer src="/__/firebase/8.6.5/firebase-storage.js"></script>
     <script type="module">
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-app.js";
-      import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-analytics.js";
-      import { collection, addDoc, getFirestore } from 'https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore.js'
       const firebaseConfig = {
         apiKey: "AIzaSyC1UcBUaK1idGK6MGvb4AMs9bcAdd2vNXI",
         authDomain: "carrotmarket-63f64.firebaseapp.com",
@@ -71,16 +68,21 @@
         appId: "1:626377442343:web:a17fa2190ebb14003efa02",
         measurementId: "G-BH8C6X8PS3"
       };
-      const app = initializeApp(firebaseConfig);
-      const analytics = getAnalytics(app);
-      const db = getFirestore()
+      firebase.initializeApp(firebaseConfig)
+      const db = firebase.firestore()
+      const storage = firebase.storage();
       send.addEventListener('click',async(e) => {
+        const file = document.querySelector('#image').files[0]
+        const storageRef = storage.ref()
+        const storageURL = storageRef.child(`image/${file.name+new Date()}`)
+        const uploading = storageURL.put(file) 
         try {
-            const docRef = await addDoc(collection(db, "product"), {
-                가격: +price.value,
-                내용: content.value,
-                제목: title.value,
-            });
+          db.collection('product').add({
+            가격: +price.value,
+            내용: content.value,
+            제목: title.value,
+            날짜: new Date(),
+          }).then(() => window.location.href = '/index.html')
         } catch (e) {
             console.error("Error adding document: ", e);
         }
