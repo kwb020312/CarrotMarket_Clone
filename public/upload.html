@@ -76,16 +76,22 @@
         const storageRef = storage.ref()
         const storageURL = storageRef.child(`image/${file.name+new Date()}`)
         const uploading = storageURL.put(file) 
-        try {
-          db.collection('product').add({
-            가격: +price.value,
-            내용: content.value,
-            제목: title.value,
-            날짜: new Date(),
-          }).then(() => window.location.href = '/index.html')
-        } catch (e) {
-            console.error("Error adding document: ", e);
-        }
+        uploading.on('state_changed', null, e => console.error(e), success => {
+          uploading.snapshot.ref.getDownloadURL().then(url => {
+            try {
+              db.collection('product').add({
+                가격: +price.value,
+                내용: content.value,
+                제목: title.value,
+                날짜: new Date(),
+                이미지: url
+              }).then(() => window.location.href = '/index.html')
+            } catch (e) {
+                console.error("Error adding document: ", e);
+            }
+          })
+        })
+        
       })
     </script>
   </body>
