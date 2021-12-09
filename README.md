@@ -6,7 +6,7 @@
 
 # 📝 메인 페이지
 
-<img src="gitImages\Index.png">
+<img src="./gitImages/Index.png">
 
 파이어베이스 DB에서 불러온 정보
 
@@ -54,7 +54,7 @@
 
 # ✨ 업로드 페이지
 
-<img src="gitImages\Upload.png">
+<img src="./gitImages/Upload.png">
 
 파이어베이스 DB에
 
@@ -84,7 +84,7 @@ uploading.on('state_changed', null, e => console.error(e), success => {
 
 # 🔥 로그인 페이지
 
-<img src="gitImages\Login.png">
+<img src="./gitImages/Login.png">
 
 ```javascript
 firebase.initializeApp(firebaseConfig)
